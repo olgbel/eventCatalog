@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "event_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private long id;
 
     @Column(name = "name", nullable = false)
@@ -20,18 +20,11 @@ public class Event {
 //    @Column(name = "event_type", nullable = false)
 //    @Enumerated(EnumType.STRING)
 //    private EventType type;
-//
-//    @Temporal(value = TemporalType.DATE)
-//    @Column(name = "event_date", nullable = false)
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    private Date date;
 
-    public Event(long id, String name/*, EventType type, Date date*/) {
-        this.id = id;
-        this.name = name;
-//        this.type = type;
-//        this.date = date;
-    }
+    @Temporal(value = TemporalType.DATE)
+    @Column(name = "event_date", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date date;
 
     public long getId() {
         return id;
@@ -56,18 +49,18 @@ public class Event {
 //    public void setType(EventType type) {
 //        this.type = type;
 //    }
-//
-//    public Date getDate() {
-//        return date;
-//    }
-//
-//    public void setDate(Date date) {
-//        this.date = date;
-//    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name/*, type, date*/);
+        return Objects.hash(id, name/*, type*/, date);
     }
 
     @Override
@@ -80,9 +73,9 @@ public class Event {
 
         Event objB = (Event) obj;
         return this.id == objB.getId() &&
-                this.name.equals(objB.getName())/* &&
-                this.type == objB.getType() &&
-                this.date == objB.getDate()*/;
+                this.name.equals(objB.getName()) &&
+                /*this.type == objB.getType() &&*/
+                this.date == objB.getDate();
     }
 
     @Override
@@ -90,8 +83,8 @@ public class Event {
         return "Event {" +
                 "id = " + id + '\'' +
                 "name = " + name + '\'' + /*
-                "type = " + type + '\'' +
-                "date = " + date + */
+                "type = " + type + '\'' +*/
+                "date = " + date +
                 "}";
     }
 }
