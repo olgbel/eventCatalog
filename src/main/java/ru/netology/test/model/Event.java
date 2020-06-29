@@ -17,20 +17,20 @@ public class Event {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "event_type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private EventType type;
+//    @Column(name = "event_type", nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private EventType type;
+//
+//    @Temporal(value = TemporalType.DATE)
+//    @Column(name = "event_date", nullable = false)
+//    @DateTimeFormat(pattern = "yyyy-MM-dd")
+//    private Date date;
 
-    @Temporal(value = TemporalType.DATE)
-    @Column(name = "event_date", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
-
-    public Event(long id, String name, EventType type, Date date) {
+    public Event(long id, String name/*, EventType type, Date date*/) {
         this.id = id;
         this.name = name;
-        this.type = type;
-        this.date = date;
+//        this.type = type;
+//        this.date = date;
     }
 
     public long getId() {
@@ -49,25 +49,25 @@ public class Event {
         this.name = name;
     }
 
-    public EventType getType() {
-        return type;
-    }
-
-    public void setType(EventType type) {
-        this.type = type;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+//    public EventType getType() {
+//        return type;
+//    }
+//
+//    public void setType(EventType type) {
+//        this.type = type;
+//    }
+//
+//    public Date getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(Date date) {
+//        this.date = date;
+//    }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, type, date);
+        return Objects.hash(id, name/*, type, date*/);
     }
 
     @Override
@@ -80,18 +80,18 @@ public class Event {
 
         Event objB = (Event) obj;
         return this.id == objB.getId() &&
-                this.name.equals(objB.getName()) &&
+                this.name.equals(objB.getName())/* &&
                 this.type == objB.getType() &&
-                this.date == objB.getDate();
+                this.date == objB.getDate()*/;
     }
 
     @Override
     public String toString() {
         return "Event {" +
                 "id = " + id + '\'' +
-                "name = " + name + '\'' +
+                "name = " + name + '\'' + /*
                 "type = " + type + '\'' +
-                "date = " + date +
+                "date = " + date + */
                 "}";
     }
 }

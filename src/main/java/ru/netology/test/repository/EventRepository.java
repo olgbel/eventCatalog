@@ -9,5 +9,5 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByNameLike(String name);
 
-    List<Event> findByDateGreaterThan(Date date);
+//    List<Event> findByDateGreaterThan(Date date);
 }

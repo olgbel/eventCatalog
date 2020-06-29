@@ -1,62 +1,54 @@
 package ru.netology.test.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.netology.test.init.EventNotFoundException;
 import ru.netology.test.model.Event;
-import ru.netology.test.service.EventService;
+import ru.netology.test.repository.EventRepository;
 
 import java.util.List;
 
 @RestController
 public class EventController {
-    private final EventService eventService;
+    private final EventRepository repository;
 
-    @Autowired
-    public EventController(EventService clientService) {
-        this.eventService = clientService;
+    public EventController(EventRepository repository) {
+        this.repository = repository;
     }
 
-    @PostMapping(value = "/events")
-    public ResponseEntity<?> createEvent(@RequestBody Event event) {
-        eventService.createEvent(event);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @GetMapping("/events")
+    List<Event> all() {
+        return repository.findAll();
     }
 
-    @GetMapping(value = "/events")
-    public ResponseEntity<List<Event>> getAllEvents() {
-        final List<Event> events = eventService.getAllEvents();
-
-        return events != null &&  !events.isEmpty()
-                ? new ResponseEntity<>(events, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping("/events")
+    Event newEvent(@RequestBody Event newEvent) {
+        return repository.save(newEvent);
     }
 
-    @GetMapping(value = "/events/{id}")
-    public ResponseEntity<Event> getEvent(@PathVariable(name = "id") int id) {
-        final Event event = eventService.getEvent(id);
-
-        return event != null
-                ? new ResponseEntity<>(event, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping("/events/{id}")
+    Event one(@PathVariable Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
     }
 
-    @PutMapping(value = "/events/{id}")
-    public ResponseEntity<?> updateEvent(@PathVariable(name = "id") int id, @RequestBody Event event) {
-        final Event updated = eventService.updateEvent(event, id);
-
-        return updated != null
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    @PutMapping("/events/{id}")
+    Event replaceEmployee(@RequestBody Event newEvent, @PathVariable Long id) {
+        return repository.findById(id)
+                .map(event -> {
+                    event.setName(newEvent.getName());
+//                    event.setType(newEvent.getType());
+//                    event.setDate(newEvent.getDate());
+                    return repository.save(event);
+                })
+                .orElseGet(() -> {
+                    newEvent.setId(id);
+                    return repository.save(newEvent);
+                });
     }
 
-    @DeleteMapping(value = "/events/{id}")
-    public ResponseEntity<?> removeEvent(@PathVariable(name = "id") int id) {
-        final boolean deleted = eventService.removeEvent(id);
-
-        return deleted
-                ? new ResponseEntity<>(HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+    @DeleteMapping("/events/{id}")
+    void deleteEvent(@PathVariable Long id) {
+        repository.deleteById(id);
     }
+
 }
