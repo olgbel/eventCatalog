@@ -8,7 +8,6 @@ import ru.netology.test.init.EventNotFoundException;
 import ru.netology.test.model.Event;
 import ru.netology.test.service.EventService;
 
-import java.text.ParseException;
 import java.util.*;
 
 @Slf4j
@@ -39,14 +38,14 @@ public class EventController {
     }
 
     @GetMapping("/events/later/{eventDate}")
-    public ResponseEntity<List<Event>> getEventByDate(@PathVariable String eventDate) throws ParseException {
+    public ResponseEntity<List<Event>> getEventByDate(@PathVariable String eventDate) {
         List<Event> events = eventService.getEventByDate(eventDate);
         return ResponseEntity.ok().body(events);
     }
 
     @PostMapping("/events")
     public Event createEvent(@RequestBody Event event) {
-        return eventService.save(event);
+        return eventService.insertOrUpdateEvent(event);
     }
 
     @PutMapping("/events/{id}")
@@ -56,7 +55,7 @@ public class EventController {
         event.setName(eventDetails.getName());
         event.setDate(eventDetails.getDate());
         event.setType(eventDetails.getType());
-        final Event updatedUser = eventService.save(event);
+        final Event updatedUser = eventService.insertOrUpdateEvent(event);
         return ResponseEntity.ok(updatedUser);
     }
 
