@@ -8,7 +8,7 @@ import ru.netology.test.init.EventNotFoundException;
 import ru.netology.test.model.Event;
 import ru.netology.test.repository.EventRepository;
 
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +33,20 @@ public class EventController {
     @GetMapping("/events")
     public ResponseEntity<List<Event>> getAllEvents() {
         List<Event> events = eventRepository.findAll();
+        return ResponseEntity.ok().body(events);
+    }
+
+    @GetMapping("/events/name/{eventName}")
+    public ResponseEntity<List<Event>> getAllEvents(@PathVariable String eventName) {
+        List<Event> events = eventRepository.findByNameLike(eventName);
+        return ResponseEntity.ok().body(events);
+    }
+
+    @GetMapping("/events/later/{eventDate}")
+    public ResponseEntity<List<Event>> getEventByDate(@PathVariable String eventDate) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date dt = formatter.parse(eventDate);
+        List<Event> events = eventRepository.findByDateGreaterThan(dt);
         return ResponseEntity.ok().body(events);
     }
 
