@@ -29,7 +29,7 @@ public class EventService {
     }
 
     public List<Event> getEventsByName(String eventName) {
-        return eventRepository.findByNameLike(eventName);
+        return eventRepository.findEventsByNameIgnoreCaseContaining(eventName);
     }
 
     public List<Event> getEventByDate(String eventDate) {
@@ -41,7 +41,7 @@ public class EventService {
             log.error("Cannot parse the event date: {}", eventDate);
             throw new RuntimeException(e.getMessage());
         }
-        return eventRepository.findByDateGreaterThan(dt);
+        return eventRepository.findEventsByDateAfterOrderByDate(dt);
     }
 
     public Event insertOrUpdateEvent(Event event) {
