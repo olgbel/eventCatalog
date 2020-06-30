@@ -17,12 +17,12 @@ public class Event {
     @Column(name = "name", nullable = false)
     private String name;
 
-//    @Column(name = "event_type", nullable = false)
-//    @Enumerated(EnumType.STRING)
-//    private EventType type;
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EventType type;
 
     @Temporal(value = TemporalType.DATE)
-    @Column(name = "event_date", nullable = false)
+    @Column(name = "date", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
@@ -42,13 +42,13 @@ public class Event {
         this.name = name;
     }
 
-//    public EventType getType() {
-//        return type;
-//    }
-//
-//    public void setType(EventType type) {
-//        this.type = type;
-//    }
+    public EventType getType() {
+        return type;
+    }
+
+    public void setType(EventType type) {
+        this.type = type;
+    }
 
     public Date getDate() {
         return date;
@@ -60,7 +60,7 @@ public class Event {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name/*, type*/, date);
+        return Objects.hash(id, name, type, date);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Event {
         Event objB = (Event) obj;
         return this.id == objB.getId() &&
                 this.name.equals(objB.getName()) &&
-                /*this.type == objB.getType() &&*/
+                this.type == objB.getType() &&
                 this.date == objB.getDate();
     }
 
@@ -82,8 +82,8 @@ public class Event {
     public String toString() {
         return "Event {" +
                 "id = " + id + '\'' +
-                "name = " + name + '\'' + /*
-                "type = " + type + '\'' +*/
+                "name = " + name + '\'' +
+                "type = " + type + '\'' +
                 "date = " + date +
                 "}";
     }

@@ -50,6 +50,8 @@ public class EventController {
                 .findById(eventId)
                 .orElseThrow(() -> new EventNotFoundException(eventId));
         event.setName(eventDetails.getName());
+        event.setDate(eventDetails.getDate());
+        event.setType(eventDetails.getType());
         final Event updatedUser = eventRepository.save(event);
         return ResponseEntity.ok(updatedUser);
     }
